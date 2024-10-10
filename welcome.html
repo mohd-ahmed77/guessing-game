@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Number Guessing Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #a777e3;
+            --accent-color: #6e8efb;
+            --text-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+          
+        }
+
+        .welcome-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px 0 rgba(31, 38, 135, 0.47);
+        }
+
+        .welcome-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes titleFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .start-button {
+            position: relative;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            color: white;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: buttonShine 3s infinite;
+        }
+
+        @keyframes buttonShine {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .game-rules {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .game-rules h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .game-rules ul {
+            list-style-position: inside;
+            margin-left: 1rem;
+        }
+
+        .game-rules li {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .floating-shapes div {
+            position: absolute;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .shape1 { top: 10%; left: 10%; }
+        .shape2 { top: 20%; right: 10%; animation-delay: 1s; }
+        .shape3 { bottom: 10%; left: 15%; animation-delay: 2s; }
+        .shape4 { bottom: 20%; right: 15%; animation-delay: 3s; }
+    
+    
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+    
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: -25px;
+        }
+        
+        .footer-text {
+            font-size: 1.1rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-heart {
+            color: #ff4d4d;
+            display: inline-block;
+            animation: heartBeat 1.5s ease infinite;
+        }
+        
+        .footer-name {
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 0 0.3rem;
+        }
+        
+        .footer-year {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: white;
+        }
+        
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+            14% {
+                transform: scale(1.3);
+            }
+            28% {
+                transform: scale(1);
+            }
+            42% {
+                transform: scale(1.3);
+            }
+            70% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Add some bottom margin to the main containers to prevent footer overlap */
+        .welcome-container,
+        .game-container {
+            margin-bottom: 100px;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape1">🎲</div>
+        <div class="shape2">🎮</div>
+        <div class="shape3">🎯</div>
+        <div class="shape4">🎪</div>
+    </div>
+    
+    <div class="welcome-container">
+        <h1>Number Guessing Game</h1>
+        <div class="description">
+            Welcome to the most exciting number guessing adventure! Test your intuition and logical thinking in this engaging game of numbers.
+        </div>
+        
+        <a href="index.html">
+            <button class="start-button">Press Enter to Play</button>
+        </a>
+
+        <div class="game-rules">
+            <h2>How to Play:</h2>
+            <ul>
+                <li>Choose your maximum number range</li>
+                <li>Try to guess the secret number</li>
+                <li>Get hints after each guess</li>
+                <li>Try to guess in as few attempts as possible!</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">
+                <span class="footer-heart">❤</span> 
+                Made with love by
+                <span class="footer-name">Mohd Ahmed</span>
+            </div>
+            <div class="footer-year">© 2024</div>
+        </div>
+    </footer>
+
+    <script>
+        // Allow pressing Enter to start the game
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
